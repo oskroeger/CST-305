@@ -4,6 +4,11 @@ import numpy as np
 from scipy.integrate import odeint
 import matplotlib.pyplot as plt
 
+# EQUATION:
+# ---------------------------------------
+# dT/dt = H(W)−C(T,A,F)
+# ---------------------------------------
+
 def cpu_temperature(T, t, W, k, c, A, F):
 
     """Function that will calculate the change in CPU temperature
@@ -45,3 +50,11 @@ plt.xlabel('Time (seconds)')
 plt.ylabel('CPU Temperature (Celsius)')
 plt.title('CPU Temperature Over Time')
 plt.show()
+
+print(f"Change in Temperature / Change in Time (dT/dt):")
+
+print(f"Workload = {W}")
+print(f"Heat Generation Constant = {k}")
+print(f"Cooling Efficiency = {c}")
+print(f"Ambient Temperature = {A}")
+print(f"Cooling System Efficiency = {F}")
