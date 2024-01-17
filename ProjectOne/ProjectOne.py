@@ -3,10 +3,11 @@
 import numpy as np
 from scipy.integrate import odeint
 import matplotlib.pyplot as plt
+from scipy.interpolate import interp1d
 
-# EQUATION:
+# DIFFERENTIAL EQUATION:
 # ---------------------------------------
-# dT/dt = H(W)−C(T,A,F)
+# dT/dt = k * W^2 - c * F * (T - A)
 # ---------------------------------------
 
 def cpu_temperature(T, t, W, k, c, A, F):
@@ -28,9 +29,6 @@ def cpu_temperature(T, t, W, k, c, A, F):
     dTdt = heat_generated - cooling_effect
     return dTdt
 
-# Time points
-t = np.linspace(0, 10, 100)  # 10 seconds
-
 # Parameters
 W = 0.7  # Workload (0 to 1)
 k = 0.5  # Heat generation constant
@@ -41,20 +39,39 @@ F = 1.0  # Cooling system efficiency (0 to 1)
 # Initial condition
 T0 = 30  # Initial CPU temperature (Celsius)
 
-# Solve ODE
-temperature = odeint(cpu_temperature, T0, t, args=(W, k, c, A, F))
+# Solve ODE on Coarser Grid
+t_coarse = np.linspace(0, 10, 100)  # Coarser grid
+temp_coarse = odeint(cpu_temperature, T0, t_coarse, args=(W, k, c, A, F))
+
+# Solve ODE on Finer Grid
+t_fine = np.linspace(0, 10, 1000)  # Finer grid
+temp_fine = odeint(cpu_temperature, T0, t_fine, args=(W, k, c, A, F))
+
+# Interpolate Coarser Solution to Finer Grid
+interpolate_coarse = interp1d(t_coarse, temp_coarse[:, 0], kind='cubic')
+temp_coarse_interpolated = interpolate_coarse(t_fine)
+
+# Calculate Error
+error = np.abs(temp_fine[:, 0] - temp_coarse_interpolated)
 
 # Visualization
-plt.plot(t, temperature)
+plt.figure(figsize=(12, 6))
+
+# Subplot 1: Temperature
+plt.subplot(1, 2, 1)
+plt.plot(t_coarse, temp_coarse, label='Coarser Grid')
+plt.plot(t_fine, temp_fine, label='Finer Grid', linestyle='--')
 plt.xlabel('Time (seconds)')
 plt.ylabel('CPU Temperature (Celsius)')
 plt.title('CPU Temperature Over Time')
+plt.legend()
+
+# Subplot 2: Error
+plt.subplot(1, 2, 2)
+plt.plot(t_fine, error)
+plt.xlabel('Time (seconds)')
+plt.ylabel('Error')
+plt.title('Estimation Error')
+
+plt.tight_layout()
 plt.show()
-
-print(f"Change in Temperature / Change in Time (dT/dt):")
-
-print(f"Workload = {W}")
-print(f"Heat Generation Constant = {k}")
-print(f"Cooling Efficiency = {c}")
-print(f"Ambient Temperature = {A}")
-print(f"Cooling System Efficiency = {F}")
