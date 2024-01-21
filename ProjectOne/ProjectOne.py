@@ -29,6 +29,10 @@ Usage:
 Run this script with Python 3 environment having NumPy, SciPy, and Matplotlib installed. Execute the script
 using 'python cpu_temperature_simulation.py'. The output will be a graphical representation of the CPU 
 temperature changes and estimation error over time.
+
+Note:
+dT/dt = k * W^2 - c * F * (T - A) is the explicit form of the temperature equation, and
+dT/dt = H(W)−C(T,A,F) is the functional form. Both represent the exact same equation. 
 """
 
 
@@ -37,7 +41,7 @@ from scipy.integrate import odeint
 import matplotlib.pyplot as plt
 from scipy.interpolate import interp1d
 
-# DIFFERENTIAL EQUATION:
+# DIFFERENTIAL EQUATION (Explicit Form):
 # ---------------------------------------
 # dT/dt = k * W^2 - c * F * (T - A)
 # ---------------------------------------
@@ -45,7 +49,7 @@ from scipy.interpolate import interp1d
 def cpu_temperature(T, t, W, k, c, A, F):
 
     """Function that will calculate the change in CPU temperature
-	Equation: dT/dt = H(W)−C(T,A,F)
+	Equation (Functional Form): dT/dt = H(W)−C(T,A,F)
 	dT = change in temperature
 	dt = change in time
 	H(W) = function represented heat generation as a function of workload W
