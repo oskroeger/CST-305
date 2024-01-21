@@ -1,5 +1,37 @@
 #!/usr/bin/env python3
 
+"""
+File: ProjectOne.py
+
+Programmers: Owen Kroeger, Atu Ambala
+
+Description:
+This script models and visualizes the change in CPU temperature over time under varying workloads. 
+It utilizes a differential equation to represent the balance between heat generation and cooling.
+The key equation used is: dT/dt = k * W^2 - c * F * (T - A), where T is the temperature, W is the workload,
+k is the heat generation constant, c is the cooling efficiency, A is the ambient temperature, and F 
+is the cooling system efficiency.
+
+Packages:
+The script uses NumPy for numerical operations, SciPy's 'odeint' for solving the differential equation,
+and Matplotlib for visualization. It calculates the CPU temperature over time for both coarse and fine
+time grids, interpolates the coarse solution to the fine grid, and visualizes the results along with the
+estimation error.
+
+Components:
+- cpu_temperature function: Calculates the rate of change in temperature.
+- Parameters setup: Defines constants and initial conditions.
+- Solving ODE: Computes temperature on coarse and fine grids.
+- Interpolation: Maps the coarser solution to a finer grid.
+- Visualization: Plots the CPU temperature and error over time.
+
+Usage:
+Run this script with Python 3 environment having NumPy, SciPy, and Matplotlib installed. Execute the script
+using 'python cpu_temperature_simulation.py'. The output will be a graphical representation of the CPU 
+temperature changes and estimation error over time.
+"""
+
+
 import numpy as np
 from scipy.integrate import odeint
 import matplotlib.pyplot as plt
