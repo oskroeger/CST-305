@@ -1,64 +1,66 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D  # noqa: F401 unused import
 
-# Parameters and Initial Conditions
-S = 10000  # Total storage capacity
-file_size_mean = 50  # Mean file size
-file_size_std = 10  # Standard deviation of file size
-T_critical = 2000  # Critical threshold for system operation
-creation_rate = 0.5  # Probability of file creation
-deletion_rate = 0.5  # Probability of file deletion
-steps = 200  # Simulation steps
+def lorenz(x, y, z, s=10, r=28, b=2.667):
+    x_dot = s*(y - x)
+    y_dot = r*x - y - x*z
+    z_dot = x*y - b*z
+    return x_dot, y_dot, z_dot
 
-# Initialize Variables
-files = np.random.normal(file_size_mean, file_size_std, int(S / (file_size_mean + file_size_std))).astype(int)
-T_load, T_access, T_save = [], [], []
-T_fragment = 0  # Simulated time since last defragmentation
-T_reassemble = 0  # Time taken for defragmentation process
-
-# Simulation
-for step in range(steps):
-    # Simulate file operations
-    if np.random.rand() < creation_rate:
-        new_file_size = int(np.random.normal(file_size_mean, file_size_std))
-        if sum(files) + new_file_size <= S:
-            files = np.append(files, new_file_size)
+def plot_lorenz(r, title):
+    dt = 0.01
+    num_steps = 10000
     
-    if np.random.rand() < deletion_rate and len(files) > 0:
-        files = np.delete(files, np.random.randint(len(files)))
+    xs = np.empty(num_steps + 1)
+    ys = np.empty(num_steps + 1)
+    zs = np.empty(num_steps + 1)
     
-    # Simplified fragmentation calculation
-    fragmentation_level = np.random.rand()  # Placeholder for a dynamic calculation
+    xs[0], ys[0], zs[0] = (0., 1., 1.05)
     
-    # Update performance metrics based on fragmentation
-    current_load_time = fragmentation_level * 1000
-    current_access_time = fragmentation_level * 1200
-    current_save_time = fragmentation_level * 800
-    T_load.append(current_load_time)
-    T_access.append(current_access_time)
-    T_save.append(current_save_time)
+    for i in range(num_steps):
+        x_dot, y_dot, z_dot = lorenz(xs[i], ys[i], zs[i], r=r)
+        xs[i + 1] = xs[i] + (x_dot * dt)
+        ys[i + 1] = ys[i] + (y_dot * dt)
+        zs[i + 1] = zs[i] + (z_dot * dt)
     
-    # Check for critical performance threshold
-    if current_load_time > T_critical or current_access_time > T_critical or current_save_time > T_critical:
-        T_fragment += 1
-        if T_fragment >= 10:  # Simplified condition for defragmentation
-            T_reassemble += 5  # Simulated time for defragmentation
-            T_fragment = 0  # Reset fragmentation timer
-            # Simulate defragmentation effect
-            fragmentation_level *= 0.5  # Reduce fragmentation level as a simple effect of defragmentation
+    # 3D plot
+    fig = plt.figure(figsize=(10, 8))
+    
+    ax = fig.add_subplot(221, projection='3d')
+    ax.plot(xs, ys, zs, lw=0.5)
+    ax.set_xlabel("X Axis")
+    ax.set_ylabel("Y Axis")
+    ax.set_zlabel("Z Axis")
+    ax.set_title("Lorenz Attractor")
+    
+    # X plot
+    ax2 = fig.add_subplot(222)
+    ax2.plot(xs)
+    ax2.set_xlabel('Time')
+    ax2.set_ylabel('X')
+    ax2.set_title('X Plot')
+    
+    # Y plot
+    ax3 = fig.add_subplot(223)
+    ax3.plot(ys)
+    ax3.set_xlabel('Time')
+    ax3.set_ylabel('Y')
+    ax3.set_title('Y Plot')
+    
+    # Z plot
+    ax4 = fig.add_subplot(224)
+    ax4.plot(zs)
+    ax4.set_xlabel('Time')
+    ax4.set_ylabel('Z')
+    ax4.set_title('Z Plot')
+    
+    plt.tight_layout(pad=3.0)
+    plt.suptitle(title, fontsize=16)
+    plt.subplots_adjust(top=0.9)
+    plt.show()
 
-# Plotting Results
-plt.figure(figsize=(12, 8))
-
-# Performance Metrics
-plt.plot(T_load, label='Load Time')
-plt.plot(T_access, label='Access Time')
-plt.plot(T_save, label='Save Time')
-plt.axhline(y=T_critical, color='r', linestyle='--', label='Critical Threshold')
-
-plt.title('File System Performance Metrics')
-plt.legend()
-plt.xlabel('Step')
-plt.ylabel('Time')
-plt.tight_layout()
-plt.show()
+# Plot for each scenario
+plot_lorenz(28, "Chaotic")
+plot_lorenz(10, "Semi-Chaotic")
+plot_lorenz(0, "Non-Chaotic")
