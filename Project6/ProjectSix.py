@@ -7,15 +7,14 @@ def taylor_series_part1(x):
 
 def taylor_series_part2(x):
     """Second-order Taylor polynomial near x=3 for the second part of the assignment."""
-    y = 6  # y(3)
-    y_prime = 1  # y'(3)
-    y_double_prime = -11  # Calculated from the differential equation
-    return y + y_prime * (x - 3) + (y_double_prime / 2) * (x - 3)**2
+    # Given the derivatives and their values at x=3: y(3)=6, y'(3)=1, y''(3)=-11
+    # Taylor polynomial: f(x) = 6 + (x - 3) - 11/2*(x - 3)^2
+    return 6 + (x - 3) - 11/2 * (x - 3)**2
 
 # Evaluate and print the results for specific points
 x_part1 = 3.5
 y_part1 = taylor_series_part1(x_part1)
-print(f"Part 1: Value of the Taylor series at x = {x_part1} is approximately {y_part1:.4f}")
+print(f"Part 1: Value of the Taylor series at x = {x_part1} is approximately {y_part1:.3f}")
 
 # Visualization
 plt.figure(figsize=(14, 7))
@@ -26,14 +25,14 @@ x_vals_part1 = np.linspace(-2, 5, 400)
 y_vals_part1 = taylor_series_part1(x_vals_part1)
 plt.plot(x_vals_part1, y_vals_part1, label='Taylor Series - n<=4')
 plt.scatter([x_part1], [y_part1], color='red', zorder=5)
-plt.text(x_part1, y_part1, f'({x_part1}, {y_part1:.2f})', color='black', verticalalignment='bottom')
+plt.text(x_part1, y_part1, f'({x_part1}, {y_part1:.3f})', color='black', verticalalignment='bottom')
 plt.title('Part 1: Taylor Series Expansion at x=3.5')
 plt.xlabel('x')
 plt.ylabel('f(x)')
 plt.legend()
 plt.grid(True)
-# Adjusted position for the Taylor polynomial equation for Part 1
-plt.figtext(0.15, -0.05, "f(x) = 1 - x - 1/3x^3 - 1/12x^4", fontsize=12, color='blue')
+# Display the Taylor polynomial equation for Part 1
+plt.text(-2, -30, "f(x) = 1 - x - 1/3x^3 - 1/12x^4", fontsize=12, color='blue')
 
 # Part 2
 plt.subplot(1, 2, 2)
@@ -45,8 +44,8 @@ plt.xlabel('x')
 plt.ylabel('y(x)')
 plt.legend()
 plt.grid(True)
-# Adjusted position for the Taylor polynomial equation for Part 2
-plt.figtext(0.55, -0.05, "P_2(x) = 6 + 1(x - 3) - 11/2(x - 3)^2", fontsize=12, color='blue')
+# Display the Taylor polynomial equation for Part 2
+plt.text(2, 4, "f(x) = 6 + 1(x - 3) - 11/2(x - 3)^2", fontsize=12, color='blue')
 
 plt.tight_layout()
 plt.show()
