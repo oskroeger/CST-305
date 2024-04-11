@@ -6,33 +6,37 @@ File: ProjectSix.py
 Programmers: Owen Kroeger, Atu Ambala
 
 Description:
-This comprehensive script integrates two distinct yet related computational models: 
+This comprehensive script integrates three distinct yet interrelated computational models:
 1. The approximation of functions using Taylor series expansions.
-2. The modeling and visualization of CPU temperature changes over time under varying workloads.
+2. The solution of a system of first-order differential equations that collectively model a second-order differential equation.
+3. The modeling and visualization of CPU temperature changes over time under varying workloads.
 
-For the first part, it employs Taylor series expansions to approximate functions up to a specified degree, focusing on demonstrating how these approximations behave for different inputs. The second part utilizes a differential equation to model the dynamic balance between heat generation and cooling in a CPU, providing insights into thermal management.
+The first part employs Taylor series expansions to approximate functions up to a specified degree, demonstrating the approximations for different inputs. The second part solves a system of first-order differential equations using SciPy's odeint, which effectively models a second-order differential equation related to a theoretical or practical problem. The third part utilizes a differential equation to model the dynamic balance between heat generation and cooling in a CPU, providing insights into thermal management strategies.
 
 Key Equations:
 - Taylor series for function approximation.
+- A system of first-order differential equations to model a second-order differential equation.
 - dT/dt = k * W^2 - c * F * (T - A) for CPU temperature, where T is the temperature, W is the workload, k is the heat generation constant, c is the cooling efficiency, A is the ambient temperature, and F is the cooling system efficiency.
 
 Packages:
-The script uses NumPy for numerical operations, SciPy's 'odeint' for solving differential equations, and Matplotlib for visualization. It visualizes both the Taylor series approximations and the CPU temperature dynamics, highlighting the utility of mathematical models in understanding complex systems.
+The script uses NumPy for numerical operations, SciPy's 'odeint' for solving differential equations, and Matplotlib for visualization. It visualizes the Taylor series approximations, the solution of the differential equation system, and the CPU temperature dynamics, highlighting the utility of mathematical models in understanding complex systems.
 
 Components:
 - Taylor series functions: Approximate given functions using Taylor series expansions.
+- A system of first-order differential equations solver: Models a second-order differential equation numerically.
 - cpu_temperature function: Calculates the rate of change in temperature due to workload and cooling efficiency.
-- Parameters setup: Defines constants and initial conditions for both parts.
-- Solving ODE: Computes CPU temperature on coarse and fine grids.
+- Parameters setup: Defines constants and initial conditions for all parts.
+- Solving ODE: Computes CPU temperature on coarse and fine grids, as well as solves a system of differential equations.
 - Interpolation: Maps the coarser solution to a finer grid for the CPU temperature model.
-- Visualization: Includes plots for both Taylor series approximations and CPU temperature changes over time, alongside estimation error analysis.
+- Visualization: Includes plots for Taylor series approximations, solutions to differential equations, and CPU temperature changes over time, alongside estimation error analysis.
 
 Usage:
-Run this script within a Python 3 environment with NumPy, SciPy, and Matplotlib installed. Execute the script using 'python ProjectOne.py'. The output includes graphical representations of function approximations using Taylor series and CPU temperature changes under varying workloads, illustrating the practical application of these mathematical models.
+Run this script within a Python 3 environment with NumPy, SciPy, and Matplotlib installed. Execute the script using 'python ProjectSix.py'. The output includes graphical representations of function approximations using Taylor series, solutions to a system of differential equations, and CPU temperature changes under varying workloads, illustrating the practical application of these mathematical models.
 
 Note:
 The explicit and functional forms of the CPU temperature equation (dT/dt = k * W^2 - c * F * (T - A) and dT/dt = H(W)−C(T,A,F)) represent the same physical phenomenon in different mathematical expressions.
 """
+
 
 import numpy as np
 from scipy.integrate import odeint
