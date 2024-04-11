@@ -94,6 +94,47 @@ plt.show()
 
 # Part 2: Power Series
 # ==================================================================================
+def solve_differential_equation(x):
+    n = 8  # Solve for n <= 8
+    a = np.zeros(n+1)  # Coefficients
+    a[0] = 1  # Initial condition, y(0) = 1
+
+    for i in range(1, n+1):
+        a[i] = -a[i-2] / 4*((i-1) * (i))
+
+    y = sum(a[i] * x**i for i in range(n+1))
+    return y
+
+# Example usage
+x_value = 0
+result = solve_differential_equation(x_value)
+print ("--------------------------------------------")
+print("Part 2: value of", f"y({x_value}) = {result}")
+
+# Define the system of first-order differential equations
+def model(y, x):
+    y0, y1 = y
+    dydx = [y1, (x - (x**2 + 4)*y0)/(x**2 + 4)]
+    return dydx
+
+# Initial conditions
+y0 = [0, 1]  # y(0) = 0, y'(0) = 1
+
+# Array of x values
+x = np.linspace(0, 10, 100)
+
+# Solve the differential equation using odeint
+y = odeint(model, y0, x)
+
+# Plot the solution
+plt.figure(figsize=(12, 6))
+plt.plot(x, y[:, 0], label='y(x)')
+plt.plot(x, y[:, 1], label="y'(x)")
+plt.title("Solving a Second-Order Differential Equation Numerically Using the odeint Solver")
+plt.xlabel('x')
+plt.ylabel('y')
+plt.legend()
+plt.show()
 
 
 # Part 3: CPU Temperature Simulation
