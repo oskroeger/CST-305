@@ -2,6 +2,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sympy import symbols, summation, limit, oo
 
+
+# ----------------------------------------------
+# Part 1 - A
+# ----------------------------------------------
+
 # Define the function and interval
 f = lambda x: np.sin(x) + 1
 a, b = -np.pi, np.pi
@@ -41,6 +46,9 @@ axs[2].set_title("Midpoint Riemann Sum")
 plt.tight_layout()
 plt.show()
 
+# ----------------------------------------------
+# Part 1 - B (Not Necessary)
+# ----------------------------------------------
 
 # Define the symbols and function for the Riemann sum calculation
 n, k = symbols('n k', integer=True)
