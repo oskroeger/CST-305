@@ -1,4 +1,5 @@
 import numpy as np
+import math
 from scipy.interpolate import CubicSpline
 import matplotlib.pyplot as plt
 from scipy.integrate import quad
@@ -65,12 +66,6 @@ def riemann_sum(n):
 n = 1000000
 result = riemann_sum(n)
 print ("The Riemann sum approximation for the integral of ln(x) from 1 to e is:" ,result)
-
-# ----------------------------------------------
-# Part 1 - C.2 
-# ----------------------------------------------
-
-
 
 # ----------------------------------------------
 # Part 2
