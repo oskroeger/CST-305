@@ -2,6 +2,7 @@ import numpy as np
 from scipy.interpolate import CubicSpline
 import matplotlib.pyplot as plt
 from scipy.integrate import quad
+from mpl_toolkits.mplot3d import Axes3D     # noqa: F401 unused import
 
 # ----------------------------------------------
 # Part 1 - A
