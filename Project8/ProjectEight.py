@@ -48,6 +48,31 @@ plt.tight_layout()
 plt.show()
 
 # ----------------------------------------------
+# Part 1 - C.1 
+# ----------------------------------------------
+
+def riemann_sum(n):
+    a = 1
+    b = math.e
+    delta_x = (b - a) / n
+    sum_result = 0
+    for i in range(1, n+1):
+        x_mid = a + ((2*i - 1) * delta_x) / 2
+        sum_result += math.log(x_mid) * delta_x
+    return sum_result
+
+# Number of subintervals
+n = 1000000
+result = riemann_sum(n)
+print ("The Riemann sum approximation for the integral of ln(x) from 1 to e is:" ,result)
+
+# ----------------------------------------------
+# Part 1 - C.2 
+# ----------------------------------------------
+
+
+
+# ----------------------------------------------
 # Part 2
 # ----------------------------------------------
 
