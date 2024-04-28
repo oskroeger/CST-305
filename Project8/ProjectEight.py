@@ -68,6 +68,26 @@ result = riemann_sum(n)
 print ("The Riemann sum approximation for the integral of ln(x) from 1 to e is:" ,result)
 
 # ----------------------------------------------
+# Part 1 - C.2 
+# ----------------------------------------------
+
+def f(x):
+    return x**2 - x**3
+
+def riemann_sum2(n):
+    delta_x = 1 / n
+    sum_result = 0
+    for k in range(1, n+1):
+        x_k = -1 + k / n
+        sum_result += f(x_k) * delta_x
+    return sum_result
+
+# Number of subintervals
+n = 1000000
+result = riemann_sum2(n)
+print("The Riemann sum approximation of the integral of x^2-x^3 from -1 to 0 is:",result)
+
+# ----------------------------------------------
 # Part 2
 # ----------------------------------------------
 
