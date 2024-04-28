@@ -13,8 +13,8 @@ a, b = -np.pi, np.pi
 x = np.linspace(a, b, 400)
 y = f(x)
 
-# Create plot
-fig, axs = plt.subplots(3, 1, figsize=(8, 18))
+# Create plot side by side
+fig, axs = plt.subplots(1, 3, figsize=(18, 6))  # Adjust subplot to horizontal layout
 
 # Subinterval partitions
 n = 4
@@ -24,14 +24,14 @@ x_sub = np.linspace(a, b, n + 1)
 # Left-hand endpoint Riemann Sum
 x_left = x_sub[:-1]
 y_left = f(x_left)
-axs[0].bar(x_left, y_left, width=dx, alpha=0.3, align='edge', edgecolor='b')
+axs[0].bar(x_left, y_left, width=dx, alpha=0.3, align='edge', edgecolor='blue', color='cyan')
 axs[0].plot(x, y, 'r-')
 axs[0].set_title("Left-hand Endpoint Riemann Sum")
 
 # Right-hand endpoint Riemann Sum
 x_right = x_sub[1:]
 y_right = f(x_right)
-axs[1].bar(x_left, y_right, width=dx, alpha=0.3, align='edge', edgecolor='g')
+axs[1].bar(x_left, y_right, width=dx, alpha=0.3, align='edge', edgecolor='green', color='lightgreen')
 axs[1].plot(x, y, 'r-')
 axs[1].set_title("Right-hand Endpoint Riemann Sum")
 
@@ -71,13 +71,10 @@ plt.legend()
 plt.grid(True)
 plt.show()
 
-total_data_MB, error = quad(lambda t: R(t), 0, 30, limit = 100)  # This integrates R(t) over 30 minutes
-total_data_MB *= 60  # Since R(t) is in MB/s, multiply the integral by 60 to convert minutes to seconds
+# Numerical integration with increased subdivisions
+total_data_MB, error = quad(lambda t: R(t), 0, 30, limit=100)
+total_data_MB *= 60  # Convert minutes to seconds
 
 # Print the corrected total data downloaded
-print(f"Total data downloaded over 30 minutes: {total_data_MB:.2f} MB")
-print(f"Estimation error of the integration: {error:.2e}")
-
-# Print the result
 print(f"Total data downloaded over 30 minutes: {total_data_MB:.2f} MB")
 print(f"Estimation error of the integration: {error:.2e}")
