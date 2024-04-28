@@ -1,7 +1,7 @@
 import numpy as np
+from scipy.interpolate import CubicSpline
 import matplotlib.pyplot as plt
-from sympy import symbols, summation, limit, oo
-
+from scipy.integrate import quad
 
 # ----------------------------------------------
 # Part 1 - A
@@ -47,20 +47,37 @@ plt.tight_layout()
 plt.show()
 
 # ----------------------------------------------
-# Part 1 - B (Not Necessary)
+# Part 2
 # ----------------------------------------------
 
-# Define the symbols and function for the Riemann sum calculation
-n, k = symbols('n k', integer=True)
-x_k = k / n  # right-hand endpoint
-f_xk = 3 * x_k + 2 * x_k**2  # f(x_k) = 3x + 2x^2
-delta_x = 1 / n
+# Time in minutes
+times = np.arange(0, 31)  # 0 to 30 minutes
 
-# Define the Riemann sum
-riemann_sum = summation(f_xk * delta_x, (k, 1, n))
+# Rates in MB/s
+rates = np.array([24.5, 23.0, 25.5, 22.8, 22.7, 25.2, 24.7, 23.9, 25.1, 25.2, 25.4, 25.3, 24.8, 24.6, 25.7, 25.8, 25.9, 24.9, 25.3, 25.5, 24.8, 23.6, 24.9, 25.1, 25.0, 25.2, 24.8, 24.2, 24.3, 25.4, 25.6])
 
-# Calculate the limit as n approaches infinity
-integral_limit = limit(riemann_sum, n, oo)
+# Define the function R(t) using cubic spline interpolation
+R = CubicSpline(times, rates)
 
-# Display the Riemann sum formula and the limit
-riemann_sum, integral_limit
+# Plotting R(t)
+t_fine = np.linspace(0, 30, 300)
+plt.figure(figsize=(10, 5))
+plt.plot(t_fine, R(t_fine), label='Interpolated Download Rate')
+plt.scatter(times, rates, color='red', label='Recorded Rates')
+plt.title('Download Rate Over Time')
+plt.xlabel('Time (minutes)')
+plt.ylabel('Rate (MB/s)')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+total_data_MB, error = quad(lambda t: R(t), 0, 30, limit = 100)  # This integrates R(t) over 30 minutes
+total_data_MB *= 60  # Since R(t) is in MB/s, multiply the integral by 60 to convert minutes to seconds
+
+# Print the corrected total data downloaded
+print(f"Total data downloaded over 30 minutes: {total_data_MB:.2f} MB")
+print(f"Estimation error of the integration: {error:.2e}")
+
+# Print the result
+print(f"Total data downloaded over 30 minutes: {total_data_MB:.2f} MB")
+print(f"Estimation error of the integration: {error:.2e}")
